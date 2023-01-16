@@ -92,7 +92,7 @@ then
     java -version >> jbosseap.install.log 2>&1
 elif [ $JAVA_VERSION == "JAVA_17" ]
 then
-    echo "Installing JAVA 11" | adddate >> jbosseap.install.log
+    echo "Installing JAVA 17" | adddate >> jbosseap.install.log
     echo "sudo yum install java-17-openjdk -y" | adddate >> jbosseap.install.log
     sudo yum install java-17-openjdk -y >> jbosseap.install.log
     echo "Successfully installed JAVA 17" | adddate >> jbosseap.install.log
