@@ -13,7 +13,6 @@ EAP_HOME=/opt/rh/eap7/root/usr/share
 EAP_RPM_CONF_STANDALONE=/etc/opt/rh/eap7/wildfly/eap7-standalone.conf
 EAP_LAUNCH_CONFIG=/opt/rh/eap7/root/usr/share/wildfly/bin/standalone.conf
 
-export EAP_LAUNCH_CONFIG="/opt/rh/eap7/root/usr/share/wildfly/bin/standalone.conf"
 echo 'export EAP_HOME="/opt/rh/eap7/root/usr/share"' >> ~/.bash_profile
 echo 'export EAP_RPM_CONF_STANDALONE="/etc/opt/rh/eap7/wildfly/eap7-standalone.conf"' >> ~/.bash_profile
 source ~/.bash_profile
@@ -39,6 +38,14 @@ while getopts "a:t:p:f:" opt; do
 done
 
 fileUrl="$artifactsLocation$pathToFile/$fileToDownload$token"
+
+export EAP_HOME="/opt/rh/eap7/root/usr/share"
+export EAP_RPM_CONF_STANDALONE="/etc/opt/rh/eap7/wildfly/eap7-standalone.conf"
+export EAP_LAUNCH_CONFIG="/opt/rh/eap7/root/usr/share/wildfly/bin/standalone.conf"
+
+EAP_HOME=/opt/rh/eap7/root/usr/share
+EAP_RPM_CONF_STANDALONE=/etc/opt/rh/eap7/wildfly/eap7-standalone.conf
+EAP_LAUNCH_CONFIG=/opt/rh/eap7/root/usr/share/wildfly/bin/standalone.conf
 
 JBOSS_EAP_USER=$9
 JBOSS_EAP_PASSWORD=${10}
@@ -194,16 +201,10 @@ sed -i 's/Before=httpd.service/Wants=NetworkManager-wait-online.service \nBefore
 echo "systemctl daemon-reload" | adddate >> jbosseap.install.log
 systemctl daemon-reload | adddate >> jbosseap.install.log
 
-echo "systemctl restart eap7-standalone.service"| adddate >> jbosseap.install.log 2>&1
-systemctl restart eap7-standalone.service       | adddate >> jbosseap.install.log 2>&1
+echo "systemctl restart eap7-standalone.service" | adddate >> jbosseap.install.log 2>&1
+systemctl restart eap7-standalone.service | adddate >> jbosseap.install.log 2>&1
 echo "systemctl status eap7-standalone.service" | adddate >> jbosseap.install.log 2>&1
-systemctl status eap7-standalone.service        | adddate >> jbosseap.install.log 2>&1
-
-yum install cronie cronie-anacron | adddate >> jbosseap.install.log 2>&1
-service crond start | adddate >> jbosseap.install.log 2>&1
-chkconfig crond on | adddate >> jbosseap.install.log 2>&1
-echo "@reboot sleep 90 && /bin/jbossservice.sh" >>  /var/spool/cron/root
-chmod 600 /var/spool/cron/root
+systemctl status eap7-standalone.service | adddate >> jbosseap.install.log 2>&1
 
 echo "Deploy an application" | adddate >> jbosseap.install.log
 echo "wget $fileUrl" | adddate >> jbosseap.install.log
